@@ -2,6 +2,7 @@ package org.example.order.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.order.bean.Order;
+import org.example.order.feign.ProductFeignClient;
 import org.example.order.service.OrderService;
 import org.example.product.bean.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
+    private ProductFeignClient productFeignClient;
+
+    @Autowired
     private DiscoveryClient discoveryClient;
 
     @Autowired
@@ -30,7 +34,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOder(Long productId, Long userId) {
-        Product product = getProductFromRemoteWithLoadBalancerAnnotation(productId);
+        // Product product = getProductFromRemoteWithLoadBalancerAnnotation(productId);
+
+        Product product = productFeignClient.getProductById(productId);
         Order order = new Order();
         order.setId(1L);
         order.setUserId(userId);
