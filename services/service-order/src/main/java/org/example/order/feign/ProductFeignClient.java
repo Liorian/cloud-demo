@@ -1,12 +1,13 @@
 package org.example.order.feign;
 
+import org.example.order.feign.fallback.ProductFeignClientFallback;
 import org.example.product.bean.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(value = "service-product") // 启用Feign 这是Feign客户端
+@FeignClient(value = "service-product", fallback = ProductFeignClientFallback.class) // 启用Feign 这是Feign客户端
 public interface ProductFeignClient {
 
     // MVC注解的两套使用逻辑
